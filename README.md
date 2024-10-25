@@ -7,6 +7,10 @@ This page is dedicated to Module 1: Generative Art from COMS 3930: Creative Embe
 
 **Project Title:** Solo Rage Cage 
 
-**Description:** This project is a generative art project that tells the story of two people looking at each other and falling in love. 
+**Description:** This project reimagines the popular drinking game Rage Cage as a single-player interactive experience. The player begins by pressing the joystick to start, aims using the joystick, adjusts the power with the potentiometer, and shoots with the button. All components are housed within 3D-printed enclosures.
 
 **Components Needed:** Lily TTGO esp32, joystick, potentiometer, buttom, cable 
+
+**Repo content:** 
+- This repo contains the code loaded in Arduido IDE to read the inputs and communicate with Processing;
+- The java code to be loaded in to Processing;
