@@ -12,5 +12,6 @@ This page is dedicated to Module 1: Generative Art from COMS 3930: Creative Embe
 **Components Needed:** Lily TTGO esp32, joystick, potentiometer, buttom, cable 
 
 **Repo content:** 
-- This repo contains the code loaded in Arduido IDE to read the inputs and communicate with Processing;
+- Ccode loaded in Arduido IDE to read the inputs and communicate with Processing;
 - The java code to be loaded in to Processing;
+- STL files used to 3D print;
