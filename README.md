@@ -1,7 +1,7 @@
 # Coms3930-module2: Iterative devices
 This page is dedicated to Module 1: Generative Art from COMS 3930: Creative Embedded Systems 
 
-![Demo GIF](demo2.gif)!
+![Demo GIF](demo2.gif)
 
 **Process blog:**  https://heavy-weather-e29.notion.site/Module-2-Solo-rage-cage-128bf6a5ae3080b8b3cec4ad772350d6 
 
