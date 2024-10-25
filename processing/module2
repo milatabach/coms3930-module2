@@ -1,0 +1,192 @@
+import processing.serial.*;
+
+Serial myPort;  
+String val;      
+
+int canvasSize = 500;
+int analogMax = 4095;
+
+float ballX; 
+float ballY;
+boolean won = false;
+boolean isThrowing = false; 
+float initialVelocityX; 
+float initialVelocityY; 
+float gravity = 40; 
+float time;
+
+String message = ""; 
+int messageDuration = 2000; 
+int messageStartTime; 
+boolean messageVisible = false; 
+
+boolean inGame = false; 
+
+void setup() {
+  size(500, 500);
+  printArray(Serial.list());
+  String portName = Serial.list()[8];
+  println(portName);
+  myPort = new Serial(this, portName, 9600); 
+  ballX = (canvasSize / 2 + 150); 
+  ballY = canvasSize; 
+}
+
+void draw() {
+  background(173, 216, 230); 
+  if (myPort.available() > 0) { 
+    val = myPort.readStringUntil('\n');  
+  }
+  
+  val = trim(val);
+  if (val != null && !val.isEmpty()) {
+    println(val);
+    
+    String[] values = split(val, ',');
+    for (int i = 0; i < values.length; i++) {
+      values[i] = trim(values[i]);
+    }
+    
+    int[] input = int(values);
+    
+    int button = input.length > 3 ? input[3] : 1; 
+    int joystickZ = input.length > 2 ? input[2] : 1; 
+    
+    if (joystickZ == 0 && !inGame) { 
+      inGame = true; 
+      resetGame();   
+    }
+
+    if (inGame) {
+      game(input);
+     
+      if (!isThrowing && messageVisible) {
+        inGame = false; 
+      }
+    } else {
+      displayHomeScreen(); 
+    }
+  } else {
+    print("Error with input from the board");
+  }
+
+  if (messageVisible && millis() - messageStartTime < messageDuration) {
+    displayMessage(message);
+  } else {
+    messageVisible = false; 
+  }
+}
+
+
+void resetGame() {
+  float randomValue = random(0, 5);
+  ballX = (canvasSize/2) + randomValue*55; 
+  ballY = canvasSize;
+  isThrowing = false; 
+  won = false;
+}
+
+void displayHomeScreen() {
+  fill(0); // Black color for text
+  textSize(32);
+  textAlign(CENTER);
+  text("Welcome to Solo Rage Cage", width / 2, height / 2);
+  textSize(15);
+  textAlign(CENTER);
+  text("A little silly game for COMS3930", width / 2, 3*(height)/ 8);
+  textSize(20);
+  textAlign(CENTER);
+  text("Press the joystick to start", width / 2, 3*(height)/ 4);
+  text("Aim with the joystick and shot with the buttom", width / 2, 4*(height)/ 6);
+}
+
+// GAME
+void game(int[] input) {
+  if (input.length == 5) {
+    int x = input[1];
+    int y = input[0];
+    int z = input[3];  
+    int power = input[4];
+
+    drawSoloCup((canvasSize / 2 - 130), (canvasSize / 2 + 50)+50); 
+
+    ballY = map(y, 0, analogMax, 0, canvasSize); // Aiming position
+
+    if (z == 0 && !isThrowing) {
+      isThrowing = true;
+      initialVelocityX = -map(power, 0, 4095, 5, 20); 
+      initialVelocityY = map(power, 0, 4095, -10, -20); 
+      time = 0;
+    }
+
+    if (isThrowing) {
+      throwBall(); 
+    }
+
+    if (!isThrowing) {
+      fill(255); 
+      circle(ballX, ballY, 20); 
+    }
+  }
+}
+
+void throwBall() {
+  time += 0.1;
+
+  ballX += initialVelocityX; 
+  ballY += initialVelocityY + gravity * time; 
+  float cupCenterX = ((canvasSize / 2) - 130); 
+  float cupCenterY = (canvasSize / 2 + 50)+100; 
+  double distanceToCup = Math.sqrt(Math.pow(cupCenterX - ballX, 2) + Math.pow(cupCenterY - ballY, 2));
+    
+  if (distanceToCup < 50) {
+     setMessage("CONGRATS");
+     won = true;
+   } 
+  
+
+  if (ballY >= canvasSize) {
+    isThrowing = false; 
+       if (won == false) {
+      setMessage("BETTER LUCK NEXT TIME");
+    }
+  }
+
+  fill(255); 
+  circle(ballX, ballY, 20); // Draw the ball
+}
+
+
+void displayMessage(String message) {
+  background(0, 0, 128); 
+  
+  fill(255);  
+  textSize(29);  
+  textAlign(CENTER);  
+  text(message, width / 2, height / 2); 
+}
+
+void setMessage(String newMessage) {
+  message = newMessage;
+  messageVisible = true; 
+  messageStartTime = millis(); 
+}
+
+void drawSoloCup(float x, float y) {
+  float cupWidth = 80;
+  float cupHeight = 100;
+  float cupBottomWidth = 65;
+
+  fill(140, 1, 1);  // Red color
+  beginShape();
+  vertex(x - cupBottomWidth / 2, y + cupHeight);            // Bottom left
+  vertex(x + cupBottomWidth / 2, y + cupHeight);            // Bottom right
+  vertex(x + cupWidth / 2, y);      // Top right
+  vertex(x - cupWidth / 2, y);      // Top left
+  endShape(CLOSE);
+
+  fill(255, 255, 255); 
+  ellipse(x, y, 88, 28);  
+  fill(255, 255, 255);  
+  ellipse(x, y, 80, 20); 
+}
