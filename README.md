@@ -29,5 +29,10 @@ This page is dedicated to Module 2: Iterative devices. My project is a solo vers
 - STL files used to 3D print;
 - Fritzing diagram file;
 
+<div align="center">
+
   <img width="527" alt="Screenshot 2024-10-27 at 9 25 17 PM" src="https://github.com/user-attachments/assets/c40dda98-338b-4137-8de0-c840017d022d">
+
+  </div>
+
 
