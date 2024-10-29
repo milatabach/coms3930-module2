@@ -17,9 +17,7 @@ This page is dedicated to Module 2: Iterative devices. My project is a solo vers
 **Components Needed:** Lily TTGO esp32, joystick, potentiometer, buttom, cable 
 
 <div align="center">
-
-![Screenshot 2024-10-27 at 5 14 03 PM](https://github.com/user-attachments/assets/71fe43c9-b6ab-4746-9aa0-c64d078f9700)
-
+<img width="476" alt="Screenshot 2024-10-29 at 9 10 22 AM" src="https://github.com/user-attachments/assets/0cab7706-21b0-4b17-b7be-d414a52376c3">
 </div>
 
 
